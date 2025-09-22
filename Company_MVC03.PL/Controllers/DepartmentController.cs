@@ -36,5 +36,10 @@ namespace Company_MVC03.PL.Controllers
             return View(departments);
         }
 
+        [HttpGet] // GET: /Department/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
     }
 }

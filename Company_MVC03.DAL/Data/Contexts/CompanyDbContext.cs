@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Company_MVC03.DAL.Data.Contexts
 {
-    internal class CompanyDbContext : DbContext
+    public class CompanyDbContext : DbContext
     {
         // V05
         override protected void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Company_MVC03.DAL.Models
 {
-    internal class Department
+    public class Department
     {
         // V05
         public int Id { get; set; }

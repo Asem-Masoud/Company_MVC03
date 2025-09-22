@@ -60,4 +60,6 @@ namespace Company_MVC03.PL
             // Update-Database // to create Database from Migration (Default Project must be DAL) in this line
         }
     }
+
+    // 09 -> 2:16
 }

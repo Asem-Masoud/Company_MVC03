@@ -16,11 +16,18 @@ namespace Company_MVC03.BLL.Repositories
     {
         private readonly CompanyDbContext _context; // Null
 
+        // ASK CLR Create object From CompanyDbContext 
+        public DepartmentRepository(CompanyDbContext context)
+        {
+            _context = context;
+        }
+
+        /*
         public DepartmentRepository()
         {
             _context = new CompanyDbContext();
         }
-
+        */
         public IEnumerable<Department> GetAll()
         {
             /*

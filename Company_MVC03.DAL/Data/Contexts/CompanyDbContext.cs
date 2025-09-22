@@ -12,10 +12,11 @@ namespace Company_MVC03.DAL.Data.Contexts
     public class CompanyDbContext : DbContext
     {
         // V05
-        override protected void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server= PC_2001\\SQLEXPRESS; Database=CompanyDB03;Trusted_Connection=True;TrustServerCertificate=True;");
-        }
+        // CLR
+        //override protected void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer("Server= PC_2001\\SQLEXPRESS; Database=CompanyDB03;Trusted_Connection=True;TrustServerCertificate=True;");
+        //}
 
         public DbSet<Department> Departments { get; set; }
 
@@ -25,8 +26,15 @@ namespace Company_MVC03.DAL.Data.Contexts
 
             base.OnModelCreating(modelBuilder);
         }
-
+        /*
         public CompanyDbContext() : base()
+        {
+
+        }
+        */
+        //V07
+
+        public CompanyDbContext(DbContextOptions<CompanyDbContext> options) : base(options)
         {
 
         }

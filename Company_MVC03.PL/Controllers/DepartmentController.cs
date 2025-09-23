@@ -1,5 +1,7 @@
 ﻿using Company_MVC03.BLL.Interfaces;
 using Company_MVC03.BLL.Repositories;
+using Company_MVC03.DAL.Models;
+using Company_MVC03.PL.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.Metrics;
 
@@ -34,6 +36,34 @@ namespace Company_MVC03.PL.Controllers
             var departments = _departmentRepository.GetAll();
 
             return View(departments);
+        }
+
+        [HttpGet] // GET: /Department/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(CreateDepartmentDto model)
+        {
+            if (ModelState.IsValid) // Server Side Validation
+            {
+                var department = new Department()
+                {
+                    Name = model.Name,
+                    Code = model.Code,
+                    CreateAt = model.CreateAt,
+
+                };
+                var count = _departmentRepository.Add(department);
+                if (count > 0)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+
+            return View(model);
         }
 
     }

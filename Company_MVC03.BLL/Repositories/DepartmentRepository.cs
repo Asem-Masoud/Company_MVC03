@@ -12,70 +12,70 @@ namespace Company_MVC03.BLL.Repositories
 {
     // V06
 
-    public class DepartmentRepository : IDepartmentRepository
+    public class DepartmentRepository : GenericRepository<Department>, IDepartmentRepository
     {
-        private readonly CompanyDbContext _context; // Null
+        //private readonly CompanyDbContext _context; // Null
 
         // ASK CLR Create object From CompanyDbContext 
-        public DepartmentRepository(CompanyDbContext context)
+        public DepartmentRepository(CompanyDbContext context) : base(context)
         {
-            _context = context;
+            // _context = context;
         }
-
         /*
-        public DepartmentRepository()
-        {
-            _context = new CompanyDbContext();
-        }
-        */
+        
+        //public DepartmentRepository()
+        //{
+        //    _context = new CompanyDbContext();
+        //}
+        
         public IEnumerable<Department> GetAll()
         {
-            /*
-            using CompanyDbContext context = new CompanyDbContext();
-            return context.Departments.ToList();
-            */
+            //
+            //using CompanyDbContext context = new CompanyDbContext();
+            //return context.Departments.ToList();
+            //
             return _context.Departments.ToList();
         }
 
         public Department? Get(int id)
         {
-            /*
-            using CompanyDbContext context = new CompanyDbContext();
-            return context.Departments.Find(id);
-            */
+            
+            //using CompanyDbContext context = new CompanyDbContext();
+            //return context.Departments.Find(id);
+           
             return _context.Departments.Find(id);
 
         }
 
         public int Add(Department model)
         {
-            /*
-            using CompanyDbContext context = new CompanyDbContext();
-            context.Departments.Add(model);
-            */
-            _context.Departments.Add(model);
+            
+            //using CompanyDbContext context = new CompanyDbContext();
+            //context.Departments.Add(model);
+            
+        _context.Departments.Add(model);
             return _context.SaveChanges();
         }
 
         public int Update(Department model)
         {
-            /*
-             using CompanyDbContext context = new CompanyDbContext();
-            context.Departments.Update(model);
-            */
-            _context.Departments.Update(model);
+            
+            // using CompanyDbContext context = new CompanyDbContext();
+            //context.Departments.Update(model);
+            
+        _context.Departments.Update(model);
             return _context.SaveChanges();
         }
 
         public int Delete(Department model)
         {
-            /*
-            using CompanyDbContext context = new CompanyDbContext();
-            context.Departments.Remove(model);
-            */
-            _context.Departments.Remove(model);
+            
+            //using CompanyDbContext context = new CompanyDbContext();
+            //context.Departments.Remove(model);
+            
+        _context.Departments.Remove(model);
             return _context.SaveChanges();
         }
-
+        */
     }
 }

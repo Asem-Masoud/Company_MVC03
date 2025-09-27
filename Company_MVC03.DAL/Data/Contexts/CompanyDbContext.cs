@@ -1,4 +1,4 @@
-﻿using Company.Go5.DAL.Models;
+﻿using Company_MVC03.DAL.Models;
 using Company_MVC03.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;

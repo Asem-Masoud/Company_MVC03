@@ -1,4 +1,5 @@
-﻿using Company_MVC03.DAL.Models;
+﻿using Company.Go5.DAL.Models;
+using Company_MVC03.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace Company_MVC03.DAL.Data.Contexts
         //}
 
         public DbSet<Department> Departments { get; set; }
+        public DbSet<Employee> Employee { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

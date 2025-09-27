@@ -21,42 +21,6 @@ namespace Company_MVC03.PL.Controllers
 
 
         [HttpGet]
-
-        public IActionResult CreateForm()
-        {
-
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(CreateEmployeeDto employeeDto)
-        {
-            if (ModelState.IsValid)
-            {
-                var employee = new Employee
-                {
-                    Name = employeeDto.Name,
-                    Age = employeeDto.Age,
-                    Email = employeeDto.Email,
-                    Phone = employeeDto.Phone,
-                    Address = employeeDto.Address,
-                    Salary = employeeDto.Salary,
-                    HiringDate = employeeDto.HiringDate,
-                    CreateAt = DateTime.Now,
-                    IsActive = true,
-                    IsDeleted = false
-                };
-                _employeeRepository.Add(employee);
-            }
-
-            else { return BadRequest(ModelState); }
-            return RedirectToAction(nameof(Index));
-        }
-
-
-        /*
-        [HttpGet]
         public IActionResult Create()
         {
             return View();
@@ -88,7 +52,7 @@ namespace Company_MVC03.PL.Controllers
             }
             return View(model);
         }
-        */
+
         [HttpGet]
         public IActionResult Details(int? id, string viewName = "Details")
         {

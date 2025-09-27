@@ -68,7 +68,7 @@ namespace Company_MVC03.PL.Controllers
         }
 
         [HttpGet]
-        public IActionResult Details(int? id)
+        public IActionResult Details(int? id, string viewName = "Details")
         {
             if (id is null) return BadRequest("Invalid Id"); //400
 
@@ -78,20 +78,21 @@ namespace Company_MVC03.PL.Controllers
                 StatusCode = 404,
                 message = $"Department With Id : {id} is not found"
             });
-            return View(department);
+            return View(viewName, department);
         }
 
         [HttpGet]
         public IActionResult Edit(int? id)
         {
+            /*
             if (id is null) return BadRequest("Invalid Id"); //400
             var department = _departmentRepository.Get(id.Value);
-            if (department is null) return NotFound(new
-            {
-                StatusCode = 404,
-                message = $"Department With Id : {id} is not found"
-            });
+            if (department is null) return NotFound(new { StatusCode = 404, message = $"Department With Id : {id} is not found" });
+
             return View(department);
+            */
+            return Details(id, "Edit");
+
         }
 
         [HttpPost]
@@ -141,27 +142,17 @@ namespace Company_MVC03.PL.Controllers
 
         public IActionResult Delete(int? id)
         {
-
+            /*
             if (id is null) { return BadRequest("id required "); }
 
             var department = _departmentRepository.Get(id.Value);
             if (department is null) { return NotFound($"no department with this id {id}"); }
 
-            /*
-            var DepartmentDto = new DepartmentDto()
-            {
-
-                Code = department.Code,
-                Name = department.Name,
-                CreateAt = department.CreateAt
-
-
-            };*/
-
             return View(department);
+            */
+
+            return Details(id, "Delete");
         }
-
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]

@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Company.Go5.DAL.Models
+namespace Company_MVC03.DAL.Models
 {
-    public class Entity
+    public class BaseEntity
     {
+        public int Id { get; set; }
+
     }
 }

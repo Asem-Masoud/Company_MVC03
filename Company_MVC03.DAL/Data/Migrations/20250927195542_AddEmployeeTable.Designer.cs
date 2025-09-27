@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Company_MVC03.DAL.Data.Migrations
 {
     [DbContext(typeof(CompanyDbContext))]
-    [Migration("20250927131740_AddEmployeeTable")]
+    [Migration("20250927195542_AddEmployeeTable")]
     partial class AddEmployeeTable
     {
         /// <inheritdoc />
@@ -25,7 +25,31 @@ namespace Company_MVC03.DAL.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Company.Go5.DAL.Models.Employee", b =>
+            modelBuilder.Entity("Company_MVC03.DAL.Models.Department", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 10L, 10);
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Departments");
+                });
+
+            modelBuilder.Entity("Company_MVC03.DAL.Models.Employee", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -69,31 +93,7 @@ namespace Company_MVC03.DAL.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Employee");
-                });
-
-            modelBuilder.Entity("Company_MVC03.DAL.Models.Department", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 10L, 10);
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreateAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Departments");
+                    b.ToTable("Employees");
                 });
 #pragma warning restore 612, 618
         }

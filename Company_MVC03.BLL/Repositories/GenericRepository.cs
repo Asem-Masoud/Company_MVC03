@@ -20,11 +20,19 @@ namespace Company_MVC03.BLL.Repositories
 
         public IEnumerable<T> GetAll()
         {
+            if (typeof(T) == typeof(Employee))
+            {
+                return (IEnumerable<T>)_Context.Employees.Include(E => E.Department).ToList();
+            }
             return _Context.Set<T>().ToList();
         }
 
         public T? Get(int id)
         {
+            if (typeof(T) == typeof(Employee))
+            {
+                return _Context.Employees.Include(E => E.Department).FirstOrDefault(E => E.Id == id) as T;
+            }
             return _Context.Set<T>().Find(id);
         }
 

@@ -9,10 +9,13 @@ namespace Company_MVC03.PL.Controllers
     public class EmployeeController : Controller
     {
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly IDepartmentRepository _departmentRepository;
+
         // ASK CLR Create object From EmployeeRepository
-        public EmployeeController(IEmployeeRepository employeeRepository)
+        public EmployeeController(IEmployeeRepository employeeRepository, IDepartmentRepository departmentRepository)
         {
             _employeeRepository = employeeRepository;
+            _departmentRepository = departmentRepository;  // RelationShip
         }
 
         [HttpGet] // GET : /Department/Index
@@ -34,6 +37,8 @@ namespace Company_MVC03.PL.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            var departments = _departmentRepository.GetAll(); // RelationShip
+            ViewData["departments"] = departments;
             return View();
         }
 
@@ -55,12 +60,14 @@ namespace Company_MVC03.PL.Controllers
                         IsActive = true,
                         IsDeleted = model.IsDeleted,
                         Phone = model.Phone,
-                        Salary = model.Salary
+                        Salary = model.Salary,
+                        DepartmentId = model.DepartmentId,
+
                     };
                     var count = _employeeRepository.Add(employee);
                     if (count > 0)
                     {
-                        TempData["Message"] = "Employee is Created !";
+                        TempData["Message"] = "Employee is Created !! ";
                         return RedirectToAction(nameof(Index));
                     }
                 }
@@ -84,10 +91,12 @@ namespace Company_MVC03.PL.Controllers
         [HttpGet]
         public IActionResult Edit(int? id)
         {
+            var departments = _departmentRepository.GetAll();
+            ViewData["departments"] = departments;
             if (id is null) return BadRequest("Invalid Id"); //400
             var employee = _employeeRepository.Get(id.Value);
             if (employee is null) return NotFound(new { StatusCode = 404, message = $"Employee With Id : {id} is not found" });
-            var employeeDto = new CreateEmployeeDto
+            var employeeDto = new CreateEmployeeDto // PartialView
             {
                 Name = employee.Name,
                 Address = employee.Address,

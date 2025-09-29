@@ -92,6 +92,7 @@ namespace Company_MVC03.PL.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Edit([FromRoute] int id, Department department)
         {
             if (ModelState.IsValid)
@@ -136,6 +137,7 @@ namespace Company_MVC03.PL.Controllers
             return View(model);
         }*/
 
+        [HttpGet]
         public IActionResult Delete(int? id)
         {
             /*

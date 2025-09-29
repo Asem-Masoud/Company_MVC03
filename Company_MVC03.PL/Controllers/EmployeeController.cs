@@ -19,9 +19,18 @@ namespace Company_MVC03.PL.Controllers
         }
 
         [HttpGet] // GET : /Department/Index
-        public IActionResult Index()
+        public IActionResult Index(string? SearchInput)
         {
-            var employees = _employeeRepository.GetAll();
+            IEnumerable<Employee> employees;
+            if (string.IsNullOrEmpty(SearchInput))
+            {
+                employees = _employeeRepository.GetAll();
+            }
+            else
+            {
+                employees = _employeeRepository.GetByName(SearchInput);
+            }
+
             #region S04V02
             //// Dictionary : 3 Property
             //// 1. ViewData : Transfer Extra Information From Controller (Action) To View

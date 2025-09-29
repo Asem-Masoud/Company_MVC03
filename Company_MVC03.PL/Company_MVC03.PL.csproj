@@ -18,4 +18,8 @@
     <ProjectReference Include="..\Company_MVC03.BLL\Company_MVC03.BLL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Department\DepartmentPartialView\" />
+  </ItemGroup>
+
 </Project>

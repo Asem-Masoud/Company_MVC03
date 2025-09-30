@@ -58,6 +58,10 @@ namespace Company_MVC03.PL.Controllers
             {
                 try
                 {
+                    // Manual Mapping -> S05V06
+                    // -> Install in /Company_MVC03.PL / Dependencies / Manage NuGet Packages / AutoMapper / Install
+
+
                     var employee = new Employee
                     {
                         Name = model.Name,

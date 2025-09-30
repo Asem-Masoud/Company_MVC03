@@ -1,6 +1,7 @@
 using Company_MVC03.BLL.Interfaces;
 using Company_MVC03.BLL.Repositories;
 using Company_MVC03.DAL.Data.Contexts;
+using Company_MVC03.PL.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace Company_MVC03.PL
@@ -21,8 +22,8 @@ namespace Company_MVC03.PL
             builder.Services.AddDbContext<CompanyDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-            });
-            // V07
+            });// Allow DI For CompanyDbContext (Manually)
+               // V07
 
             /*
             builder.Services.AddDbContext<CompanyDbContext>(options =>
@@ -31,7 +32,18 @@ namespace Company_MVC03.PL
                 options.UseSqlServer("Server= PC_2001\\SQLEXPRESS; Database=CompanyDB03;Trusted_Connection=True;TrustServerCertificate=True;");// ->  Because we may be changed in it in the future so we copy it to "appsettings.json"
             });
             */
-            // Allow DI For CompanyDbContext (Manually)
+
+            /*// S04V05
+            // Allow Dependances 
+            // depend on Life Time
+            builder.Services.AddScoped(); // Create Object Life Time Per Request - UnReachable Object
+            builder.Services.AddTransient(); // Create Object Life Time Per Operation 
+            builder.Services.AddSingleton(); // Create Object Life Time Per Application
+            */
+
+            builder.Services.AddScoped<IScopedService, ScopedServices>(); // 
+            builder.Services.AddTransient<ITransientServices, TransientServices>(); //  
+            builder.Services.AddSingleton<ISingletonServices, SingletonServices>(); // 
 
             var app = builder.Build();
 

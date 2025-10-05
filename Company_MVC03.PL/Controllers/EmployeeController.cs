@@ -1,4 +1,5 @@
-﻿using Company_MVC03.BLL.Interfaces;
+﻿using AutoMapper;
+using Company_MVC03.BLL.Interfaces;
 using Company_MVC03.BLL.Repositories;
 using Company_MVC03.DAL.Models;
 using Company_MVC03.PL.Dtos;
@@ -10,12 +11,17 @@ namespace Company_MVC03.PL.Controllers
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IDepartmentRepository _departmentRepository;
+        private readonly IMapper _mapper;
 
         // ASK CLR Create object From EmployeeRepository
-        public EmployeeController(IEmployeeRepository employeeRepository, IDepartmentRepository departmentRepository)
+        public EmployeeController(IEmployeeRepository employeeRepository,
+            IDepartmentRepository departmentRepository,
+            IMapper mapper
+            )
         {
             _employeeRepository = employeeRepository;
             _departmentRepository = departmentRepository;  // RelationShip
+            _mapper = mapper;
         }
 
         [HttpGet] // GET : /Department/Index
@@ -61,7 +67,7 @@ namespace Company_MVC03.PL.Controllers
                     // Manual Mapping -> S05V06
                     // -> Install in /Company_MVC03.PL / Dependencies / Manage NuGet Packages / AutoMapper / Install
 
-
+                    /*
                     var employee = new Employee
                     {
                         Name = model.Name,
@@ -77,6 +83,10 @@ namespace Company_MVC03.PL.Controllers
                         DepartmentId = model.DepartmentId,
 
                     };
+                    */
+
+                    var employee = _mapper.Map<Employee>(model);
+
                     var count = _employeeRepository.Add(employee);
                     if (count > 0)
                     {
@@ -98,6 +108,8 @@ namespace Company_MVC03.PL.Controllers
             if (id is null) return BadRequest("Invalid Id"); //400
             var employee = _employeeRepository.Get(id.Value);
             if (employee is null) return NotFound(new { StatusCode = 404, message = $"Employee With Id : {id} is not found" });
+
+
             return View(viewName, employee);
         }
 
@@ -122,7 +134,12 @@ namespace Company_MVC03.PL.Controllers
                 Phone = employee.Phone,
                 Salary = employee.Salary
             };
-            return View(employeeDto);
+
+            var dto = _mapper.Map<CreateEmployeeDto>(employee);
+
+
+            //return View(employeeDto);
+            return View(dto);
         }
 
         [HttpPost]

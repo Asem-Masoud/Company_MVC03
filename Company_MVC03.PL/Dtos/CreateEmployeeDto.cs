@@ -7,7 +7,7 @@ namespace Company_MVC03.PL.Dtos
     public class CreateEmployeeDto
     {
         [Required(ErrorMessage = "Name is required")]
-        public string Name { get; set; }
+        public string EmpName { get; set; }
         [Range(22, 60, ErrorMessage = "Age must be between 18 and 65")]
         public int? Age { get; set; }
         [DataType(DataType.EmailAddress, ErrorMessage = "Email is not valid")]
@@ -23,7 +23,7 @@ namespace Company_MVC03.PL.Dtos
         [DisplayName("Hiring Date")]
         public DateTime HiringDate { get; set; }
         [DisplayName("Date of Create")]
-        public DateTime CreateAt { get; set; }
+        public DateTime CreateAt { get; set; } = DateTime.UtcNow;
 
         //// RelationShip
         [DisplayName("Department")]

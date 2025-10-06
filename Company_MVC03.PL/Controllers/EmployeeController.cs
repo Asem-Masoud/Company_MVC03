@@ -1,4 +1,5 @@
-﻿using Company_MVC03.BLL.Interfaces;
+﻿using AutoMapper;
+using Company_MVC03.BLL.Interfaces;
 using Company_MVC03.BLL.Repositories;
 using Company_MVC03.DAL.Models;
 using Company_MVC03.PL.Dtos;
@@ -9,13 +10,18 @@ namespace Company_MVC03.PL.Controllers
     public class EmployeeController : Controller
     {
         private readonly IEmployeeRepository _employeeRepository;
-        private readonly IDepartmentRepository _departmentRepository;
+        // private readonly IDepartmentRepository _departmentRepository; // because we used iy only once in Create Get
+        private readonly IMapper _mapper;
 
         // ASK CLR Create object From EmployeeRepository
-        public EmployeeController(IEmployeeRepository employeeRepository, IDepartmentRepository departmentRepository)
+        public EmployeeController(IEmployeeRepository employeeRepository,
+            IDepartmentRepository departmentRepository,
+            IMapper mapper
+            )
         {
             _employeeRepository = employeeRepository;
-            _departmentRepository = departmentRepository;  // RelationShip
+            // _departmentRepository = departmentRepository;  // RelationShip
+            _mapper = mapper;
         }
 
         [HttpGet] // GET : /Department/Index
@@ -46,8 +52,8 @@ namespace Company_MVC03.PL.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            var departments = _departmentRepository.GetAll(); // RelationShip
-            ViewData["departments"] = departments;
+            //var departments = _departmentRepository.GetAll(); // RelationShip
+            // ViewData["departments"] = departments;
             return View();
         }
 
@@ -58,6 +64,10 @@ namespace Company_MVC03.PL.Controllers
             {
                 try
                 {
+                    // Manual Mapping -> S05V06
+                    // -> Install in /Company_MVC03.PL / Dependencies / Manage NuGet Packages / AutoMapper / Install
+
+                    /*
                     var employee = new Employee
                     {
                         Name = model.Name,
@@ -73,6 +83,10 @@ namespace Company_MVC03.PL.Controllers
                         DepartmentId = model.DepartmentId,
 
                     };
+                    */
+
+                    var employee = _mapper.Map<Employee>(model);
+
                     var count = _employeeRepository.Add(employee);
                     if (count > 0)
                     {
@@ -94,20 +108,22 @@ namespace Company_MVC03.PL.Controllers
             if (id is null) return BadRequest("Invalid Id"); //400
             var employee = _employeeRepository.Get(id.Value);
             if (employee is null) return NotFound(new { StatusCode = 404, message = $"Employee With Id : {id} is not found" });
+
+
             return View(viewName, employee);
         }
 
         [HttpGet]
         public IActionResult Edit(int? id)
         {
-            var departments = _departmentRepository.GetAll();
-            ViewData["departments"] = departments;
+            //var departments = _departmentRepository.GetAll();
+            // ViewData["departments"] = departments;
             if (id is null) return BadRequest("Invalid Id"); //400
             var employee = _employeeRepository.Get(id.Value);
             if (employee is null) return NotFound(new { StatusCode = 404, message = $"Employee With Id : {id} is not found" });
             var employeeDto = new CreateEmployeeDto // PartialView
             {
-                Name = employee.Name,
+                EmpName = employee.Name,
                 Address = employee.Address,
                 Age = employee.Age,
                 CreateAt = employee.CreateAt,
@@ -118,7 +134,12 @@ namespace Company_MVC03.PL.Controllers
                 Phone = employee.Phone,
                 Salary = employee.Salary
             };
-            return View(employeeDto);
+
+            var dto = _mapper.Map<CreateEmployeeDto>(employee);
+
+
+            //return View(employeeDto);
+            return View(dto);
         }
 
         [HttpPost]
@@ -133,7 +154,7 @@ namespace Company_MVC03.PL.Controllers
                 var employee = new Employee
                 {
                     Id = id,
-                    Name = model.Name,
+                    Name = model.EmpName,
                     Address = model.Address,
                     Age = model.Age,
                     CreateAt = model.CreateAt,

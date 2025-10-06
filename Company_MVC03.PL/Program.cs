@@ -1,6 +1,7 @@
 using Company_MVC03.BLL.Interfaces;
 using Company_MVC03.BLL.Repositories;
 using Company_MVC03.DAL.Data.Contexts;
+using Company_MVC03.PL.MappingProfiles;
 using Company_MVC03.PL.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,6 +25,10 @@ namespace Company_MVC03.PL
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });// Allow DI For CompanyDbContext (Manually)
                // V07
+
+            // AutoMapper
+            builder.Services.AddAutoMapper(m => m.AddProfile(new EmployeeProfile()));
+
 
             /*
             builder.Services.AddDbContext<CompanyDbContext>(options =>

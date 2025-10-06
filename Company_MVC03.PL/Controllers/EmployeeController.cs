@@ -10,7 +10,7 @@ namespace Company_MVC03.PL.Controllers
     public class EmployeeController : Controller
     {
         private readonly IEmployeeRepository _employeeRepository;
-        private readonly IDepartmentRepository _departmentRepository;
+        // private readonly IDepartmentRepository _departmentRepository; // because we used iy only once in Create Get
         private readonly IMapper _mapper;
 
         // ASK CLR Create object From EmployeeRepository
@@ -20,7 +20,7 @@ namespace Company_MVC03.PL.Controllers
             )
         {
             _employeeRepository = employeeRepository;
-            _departmentRepository = departmentRepository;  // RelationShip
+            // _departmentRepository = departmentRepository;  // RelationShip
             _mapper = mapper;
         }
 
@@ -52,8 +52,8 @@ namespace Company_MVC03.PL.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            var departments = _departmentRepository.GetAll(); // RelationShip
-            ViewData["departments"] = departments;
+            //var departments = _departmentRepository.GetAll(); // RelationShip
+            // ViewData["departments"] = departments;
             return View();
         }
 
@@ -116,14 +116,14 @@ namespace Company_MVC03.PL.Controllers
         [HttpGet]
         public IActionResult Edit(int? id)
         {
-            var departments = _departmentRepository.GetAll();
-            ViewData["departments"] = departments;
+            //var departments = _departmentRepository.GetAll();
+            // ViewData["departments"] = departments;
             if (id is null) return BadRequest("Invalid Id"); //400
             var employee = _employeeRepository.Get(id.Value);
             if (employee is null) return NotFound(new { StatusCode = 404, message = $"Employee With Id : {id} is not found" });
             var employeeDto = new CreateEmployeeDto // PartialView
             {
-                Name = employee.Name,
+                EmpName = employee.Name,
                 Address = employee.Address,
                 Age = employee.Age,
                 CreateAt = employee.CreateAt,
@@ -154,7 +154,7 @@ namespace Company_MVC03.PL.Controllers
                 var employee = new Employee
                 {
                     Id = id,
-                    Name = model.Name,
+                    Name = model.EmpName,
                     Address = model.Address,
                     Age = model.Age,
                     CreateAt = model.CreateAt,

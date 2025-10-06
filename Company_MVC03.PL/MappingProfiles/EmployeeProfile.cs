@@ -8,7 +8,7 @@ namespace Company_MVC03.PL.MappingProfiles
     {
         public EmployeeProfile()
         {
-            CreateMap<CreateEmployeeDto, Employee>();
+            CreateMap<CreateEmployeeDto, Employee>().ForMember(d => d.Name, o => o.MapFrom(s => $"{s.EmpName} Hello"));
             CreateMap<Employee, CreateEmployeeDto>();
         }
     }

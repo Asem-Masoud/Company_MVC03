@@ -28,7 +28,6 @@ namespace Company_MVC03.PL
 
             // AutoMapper
             builder.Services.AddAutoMapper(m => m.AddProfile(new EmployeeProfile()));
-            builder.Services.AddAutoMapper(m => m.AddProfile(new DepartmentProfile()));
 
 
             /*

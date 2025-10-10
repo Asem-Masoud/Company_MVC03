@@ -1,12 +1,12 @@
-﻿using Company_MVC03.BLL.Interfaces;
-using Company_MVC03.DAL.Data.Contexts;
-using Company_MVC03.DAL.Models;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Company_MVC03.BLL.Interfaces;
+using Company_MVC03.DAL.Data.Contexts;
+using Company_MVC03.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Company_MVC03.BLL.Repositories
 {

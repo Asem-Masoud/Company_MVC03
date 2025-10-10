@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Company_MVC03.BLL.Interfaces;
-using Company_MVC03.BLL.Repositories;
 using Company_MVC03.DAL.Models;
 using Company_MVC03.PL.Dtos;
 using Microsoft.AspNetCore.Mvc;
@@ -9,19 +8,24 @@ namespace Company_MVC03.PL.Controllers
 {
     public class EmployeeController : Controller
     {
-        private readonly IEmployeeRepository _employeeRepository;
-        // private readonly IDepartmentRepository _departmentRepository; // because we used iy only once in Create Get
+        private readonly IUnitOfWork _unitOfWork;
+
+        // private readonly IEmployeeRepository _employeeRepository; // UnitOfWork
+        // private readonly IDepartmentRepository _departmentRepository; //Comment, because we used it only once in Create Get
         private readonly IMapper _mapper;
 
         // ASK CLR Create object From EmployeeRepository
-        public EmployeeController(IEmployeeRepository employeeRepository,
-            IDepartmentRepository departmentRepository,
+        public EmployeeController(
+            //IEmployeeRepository employeeRepository,
+            //IDepartmentRepository departmentRepository,
+            IUnitOfWork unitOfWork,
             IMapper mapper
             )
         {
-            _employeeRepository = employeeRepository;
-            // _departmentRepository = departmentRepository;  // RelationShip
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
+            // _employeeRepository = employeeRepository;
+            // _departmentRepository = departmentRepository;  // RelationShip
         }
 
         [HttpGet] // GET : /Department/Index
@@ -30,12 +34,14 @@ namespace Company_MVC03.PL.Controllers
             IEnumerable<Employee> employees;
             if (string.IsNullOrEmpty(SearchInput))
             {
-                employees = _employeeRepository.GetAll();
+                employees = _unitOfWork.EmployeeRepository.GetAll();
             }
             else
             {
-                employees = _employeeRepository.GetByName(SearchInput);
+                employees = _unitOfWork.EmployeeRepository.GetByName(SearchInput);
             }
+
+            return View(employees);
 
             #region S04V02
             //// Dictionary : 3 Property
@@ -45,15 +51,14 @@ namespace Company_MVC03.PL.Controllers
             //ViewBag.Message = "Hello From ViewBag";
             ////// 3. TempData
             #endregion
-
-            return View(employees);
         }
 
         [HttpGet]
         public IActionResult Create()
         {
-            //var departments = _departmentRepository.GetAll(); // RelationShip
-            // ViewData["departments"] = departments;
+            var departments = _unitOfWork.DepartmentRepository.GetAll(); // RelationShip
+            ViewData["departments"] = departments;
+
             return View();
         }
 
@@ -87,7 +92,8 @@ namespace Company_MVC03.PL.Controllers
 
                     var employee = _mapper.Map<Employee>(model);
 
-                    var count = _employeeRepository.Add(employee);
+                    _unitOfWork.EmployeeRepository.Add(employee);
+                    var count = _unitOfWork.Complete();
                     if (count > 0)
                     {
                         TempData["Message"] = "Employee is Created !! ";
@@ -107,22 +113,23 @@ namespace Company_MVC03.PL.Controllers
         {
             if (id is null) return BadRequest("Invalid Id"); //400
 
-            var employee = _employeeRepository.Get(id.Value);
+            var employee = _unitOfWork.EmployeeRepository.Get(id.Value);
 
             if (employee is null) return NotFound(new { StatusCode = 404, message = $"Employee With Id : {id} is not found" });
 
-            var model = _mapper.Map<CreateEmployeeDto>(employee);
+            var dto = _mapper.Map<CreateEmployeeDto>(employee);
 
-            return View(viewName, model);
+            return View(viewName, dto);
         }
 
         [HttpGet]
         public IActionResult Edit(int? id, string viewName = "Edit")
         {
-            //var departments = _departmentRepository.GetAll();
-            // ViewData["departments"] = departments;
             if (id is null) return BadRequest("Invalid Id"); //400
-            var employee = _employeeRepository.Get(id.Value);
+
+            var employee = _unitOfWork.EmployeeRepository.Get(id.Value);
+            var departments = _unitOfWork.DepartmentRepository.GetAll();
+            ViewData["departments"] = departments;
             if (employee is null) return NotFound(new { StatusCode = 404, message = $"Employee With Id : {id} is not found" });
 
             /*
@@ -179,7 +186,9 @@ namespace Company_MVC03.PL.Controllers
                 employee.Id = id;
 
 
-                var count = _employeeRepository.Update(employee);
+                _unitOfWork.EmployeeRepository.Update(employee);
+                var count = _unitOfWork.Complete();
+
 
                 if (count > 0)
                 {
@@ -206,7 +215,8 @@ namespace Company_MVC03.PL.Controllers
                 employee.Id = id;
 
                 //if (id != model.Id) return BadRequest(); //400
-                var count = _employeeRepository.Delete(employee);
+                _unitOfWork.EmployeeRepository.Delete(employee);
+                var count = _unitOfWork.Complete();
                 if (count > 0)
                 {
                     return RedirectToAction(nameof(Index));

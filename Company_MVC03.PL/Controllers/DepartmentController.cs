@@ -1,10 +1,9 @@
-﻿using Company_MVC03.BLL.Interfaces;
+﻿using AutoMapper;
+using Company_MVC03.BLL.Interfaces;
 using Company_MVC03.BLL.Repositories;
 using Company_MVC03.DAL.Models;
 using Company_MVC03.PL.Dtos;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.DotNet.Scaffolding.Shared.Messaging;
-using System.Diagnostics.Metrics;
 
 namespace Company_MVC03.PL.Controllers
 {
@@ -14,13 +13,16 @@ namespace Company_MVC03.PL.Controllers
     // MVC Controller 
     public class DepartmentController : Controller
     {
-        private readonly IDepartmentRepository _departmentRepository;
+        //private readonly IDepartmentRepository _departmentRepository;
+
+        private readonly IUnitOfWork _unitOfWork;
 
         // ASK CLR Create object From DepartmentRepository 
 
-        public DepartmentController(IDepartmentRepository departmentRepository)
+        public DepartmentController(/*IDepartmentRepository departmentRepository*/ IUnitOfWork unitOfWork)
         {
-            _departmentRepository = departmentRepository;
+            // _departmentRepository = departmentRepository;
+            _unitOfWork = unitOfWork;
         }
 
         /*
@@ -34,7 +36,7 @@ namespace Company_MVC03.PL.Controllers
         public IActionResult Index()
         {
             // DepartmentRepository departmentRepository = new DepartmentRepository();
-            var departments = _departmentRepository.GetAll();
+            var departments = _unitOfWork.DepartmentRepository.GetAll();
 
             return View(departments);
         }
@@ -57,7 +59,8 @@ namespace Company_MVC03.PL.Controllers
                     CreateAt = model.CreateAt,
 
                 };
-                var count = _departmentRepository.Add(department);
+                _unitOfWork.DepartmentRepository.Add(department);
+                var count = _unitOfWork.Complete(); // Save Changes
                 if (count > 0)
                 {
                     return RedirectToAction(nameof(Index));
@@ -72,7 +75,7 @@ namespace Company_MVC03.PL.Controllers
         {
             if (id is null) return BadRequest("Invalid Id"); //400
 
-            var department = _departmentRepository.Get(id.Value);
+            var department = _unitOfWork.DepartmentRepository.Get(id.Value);
             if (department is null) return NotFound(new { StatusCode = 404, message = $"Department With Id : {id} is not found" });
             return View(viewName, department);
         }
@@ -99,7 +102,8 @@ namespace Company_MVC03.PL.Controllers
             {
                 if (id != department.Id) return BadRequest(); //400
 
-                var count = _departmentRepository.Update(department);
+                _unitOfWork.DepartmentRepository.Update(department);
+                var count = _unitOfWork.Complete(); // Save Changes
 
                 if (count > 0)
                 {
@@ -138,7 +142,7 @@ namespace Company_MVC03.PL.Controllers
         }*/
 
         [HttpGet]
-        public IActionResult Delete(int? id)
+        public IActionResult Details(int? id)
         {
             /*
             if (id is null) { return BadRequest("id required "); }
@@ -149,7 +153,7 @@ namespace Company_MVC03.PL.Controllers
             return View(department);
             */
 
-            return Details(id, "Delete");
+            return Details(id, "Details");
         }
 
         [HttpPost]
@@ -161,7 +165,8 @@ namespace Company_MVC03.PL.Controllers
             {
                 if (id != department.Id) return BadRequest(); //400
 
-                var count = _departmentRepository.Delete(department);
+                _unitOfWork.DepartmentRepository.Delete(department);
+                var count = _unitOfWork.Complete(); // Save Changes
 
                 if (count > 0)
                 {

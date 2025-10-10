@@ -1,8 +1,9 @@
-﻿using static NuGet.Packaging.PackagingConstants;
+﻿using Company_MVC03.PL.Dtos;
+using static NuGet.Packaging.PackagingConstants;
 
-namespace Company_MVC03.PL.Helper
+namespace Company_MVC03.PL.Helpers
 {
-    public static class DocumentHelper
+    public static class DocumentSetting
     {
 
         // 1. Upload File
@@ -67,5 +68,9 @@ namespace Company_MVC03.PL.Helper
             }
         }
 
+        internal static void UploadedFile(CreateEmployeeDto model)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

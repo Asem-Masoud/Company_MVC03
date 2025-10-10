@@ -2,6 +2,7 @@
 using Company_MVC03.BLL.Interfaces;
 using Company_MVC03.DAL.Models;
 using Company_MVC03.PL.Dtos;
+using Company_MVC03.PL.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Company_MVC03.PL.Controllers
@@ -90,9 +91,15 @@ namespace Company_MVC03.PL.Controllers
                     };
                     */
 
-                    var employee = _mapper.Map<Employee>(model);
+                    if (model.Image is not null)
+                    {
+                        model.ImageName = DocumentSetting.UploadFile(model.Image, "images");
+                    }
 
+
+                    var employee = _mapper.Map<Employee>(model);
                     _unitOfWork.EmployeeRepository.Add(employee);
+
                     var count = _unitOfWork.Complete();
                     if (count > 0)
                     {

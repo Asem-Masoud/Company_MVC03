@@ -106,21 +106,26 @@ namespace Company_MVC03.PL.Controllers
         public IActionResult Details(int? id, string viewName = "Details")
         {
             if (id is null) return BadRequest("Invalid Id"); //400
+
             var employee = _employeeRepository.Get(id.Value);
+
             if (employee is null) return NotFound(new { StatusCode = 404, message = $"Employee With Id : {id} is not found" });
 
+            var model = _mapper.Map<CreateEmployeeDto>(employee);
 
-            return View(viewName, employee);
+            return View(viewName, model);
         }
 
         [HttpGet]
-        public IActionResult Edit(int? id)
+        public IActionResult Edit(int? id, string viewName = "Edit")
         {
             //var departments = _departmentRepository.GetAll();
             // ViewData["departments"] = departments;
             if (id is null) return BadRequest("Invalid Id"); //400
             var employee = _employeeRepository.Get(id.Value);
             if (employee is null) return NotFound(new { StatusCode = 404, message = $"Employee With Id : {id} is not found" });
+
+            /*
             var employeeDto = new CreateEmployeeDto // PartialView
             {
                 EmpName = employee.Name,
@@ -134,23 +139,26 @@ namespace Company_MVC03.PL.Controllers
                 Phone = employee.Phone,
                 Salary = employee.Salary
             };
+            */
 
             var dto = _mapper.Map<CreateEmployeeDto>(employee);
 
 
             //return View(employeeDto);
-            return View(dto);
+            return View(viewName, dto);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit([FromRoute] int id,
           //Employee
-          CreateEmployeeDto model)
+          CreateEmployeeDto model, string viewName = "Edit")
         {
             if (ModelState.IsValid)
             {
-                // if (id != model.Id) return BadRequest(); //400
+
+                //if (id != model.Id) return BadRequest(); //400
+                /*
                 var employee = new Employee
                 {
                     Id = id,
@@ -165,14 +173,22 @@ namespace Company_MVC03.PL.Controllers
                     Phone = model.Phone,
                     Salary = model.Salary
                 };
+                */
+
+                var employee = _mapper.Map<Employee>(model);
+                employee.Id = id;
+
+
                 var count = _employeeRepository.Update(employee);
+
                 if (count > 0)
                 {
                     return RedirectToAction(nameof(Index));
                 }
             }
-            return View(model);
+            return View(viewName, model);
         }
+
 
         [HttpGet]
         public IActionResult Delete(int? id)
@@ -182,12 +198,15 @@ namespace Company_MVC03.PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete([FromRoute] int id, Employee model)
+        public IActionResult Delete([FromRoute] int id, CreateEmployeeDto model)
         {
             if (ModelState.IsValid)
             {
-                if (id != model.Id) return BadRequest(); //400
-                var count = _employeeRepository.Delete(model);
+                var employee = _mapper.Map<Employee>(model);
+                employee.Id = id;
+
+                //if (id != model.Id) return BadRequest(); //400
+                var count = _employeeRepository.Delete(employee);
                 if (count > 0)
                 {
                     return RedirectToAction(nameof(Index));

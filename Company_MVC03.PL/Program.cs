@@ -81,8 +81,33 @@ namespace Company_MVC03.PL
             // in Package Manager Console -> install-package Microsoft.EntityFrameworkCore.Tools
             // Add-Migration "InitialCreate" -OutputDir Data/Migrations // to create Migration in Data/Migrations folder (Default Project must be DAL) in this line
             // Update-Database // to create Database from Migration (Default Project must be DAL) in this line
+
+
         }
     }
-
-
 }
+
+#region S06V06 Asynch (Parallel) VS Sync(Series)
+// Synchronous (Series) : Each Statement Wait The Previous Statement To Be Completed
+// VS Asynchronous (Parallel) : Each Statement Do Not Wait The Previous Statement To Be Completed
+class Test
+{
+    public void Fun01()
+    {
+        // Statement01
+        // Statement02
+        // await // Statement03 -> Take Time
+        // Statement04
+        // Statement05
+    }
+    public void Fun02()
+    {
+        // Statement01
+        // Statement02
+        // Statement03
+        // Statement04
+        // Statement05
+    }
+}
+
+#endregion

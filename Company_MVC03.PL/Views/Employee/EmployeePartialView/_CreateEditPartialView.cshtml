@@ -1,5 +1,5 @@
-﻿@using Company_MVC03.BLL.Interfaces
-@model CreateEmployeeDto
+﻿@model CreateEmployeeDto
+
 
 @inject IDepartmentRepository _departmentRepository
 
@@ -10,9 +10,9 @@
 }
 
 <div class="my-3">
-    <label asp-for="EmpName" class="col-form-label"></label>
-    <input asp-for="EmpName" class="form-control" />
-    <span asp-validation-for="EmpName" class="text-danger"></span>
+    <label asp-for="Name" class="col-form-label"></label>
+    <input asp-for="Name" class="form-control" />
+    <span asp-validation-for="Name" class="text-danger"></span>
 </div>
 
 <div class="my-3">
@@ -69,3 +69,7 @@
 </div>
 
 
+<div class="my-3">
+    <label asp-for="Image" class="col-form-label"></label>
+    <input asp-for="Image" type="file" class="form-control" />
+</div>

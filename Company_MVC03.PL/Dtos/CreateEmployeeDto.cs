@@ -7,7 +7,7 @@ namespace Company_MVC03.PL.Dtos
     public class CreateEmployeeDto
     {
         [Required(ErrorMessage = "Name is required")]
-        public string EmpName { get; set; }
+        public string Name { get; set; }
         [Range(22, 60, ErrorMessage = "Age must be between 18 and 65")]
         public int? Age { get; set; }
         [DataType(DataType.EmailAddress, ErrorMessage = "Email is not valid")]
@@ -28,7 +28,10 @@ namespace Company_MVC03.PL.Dtos
         //// RelationShip
         [DisplayName("Department")]
         public int? DepartmentId { get; set; }
-        //public Department Department { get; set; }
+        public string? DepartmentName { get; set; }
+        //public Department? Department { get; set; }
 
+        public string? ImageName { get; set; }
+        public IFormFile? Image { get; set; }
     }
 }

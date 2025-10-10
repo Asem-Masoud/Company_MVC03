@@ -96,7 +96,6 @@ namespace Company_MVC03.PL.Controllers
                         model.ImageName = DocumentSetting.UploadFile(model.Image, "images");
                     }
 
-
                     var employee = _mapper.Map<Employee>(model);
                     _unitOfWork.EmployeeRepository.Add(employee);
 
@@ -164,9 +163,7 @@ namespace Company_MVC03.PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit([FromRoute] int id,
-          //Employee
-          CreateEmployeeDto model, string viewName = "Edit")
+        public IActionResult Edit([FromRoute] int id, /*Employee*/ CreateEmployeeDto model, string viewName = "Edit")
         {
             if (ModelState.IsValid)
             {
@@ -188,6 +185,17 @@ namespace Company_MVC03.PL.Controllers
                     Salary = model.Salary
                 };
                 */
+
+                if (model.ImageName is not null && model.Image is not null)
+                {
+                    DocumentSetting.DeleteFile(model.ImageName, "images");
+                }
+
+                if (model.Image is not null)
+                {
+                    model.ImageName = DocumentSetting.UploadFile(model.Image, "images");
+                }
+
 
                 var employee = _mapper.Map<Employee>(model);
                 employee.Id = id;
@@ -226,6 +234,11 @@ namespace Company_MVC03.PL.Controllers
                 var count = _unitOfWork.Complete();
                 if (count > 0)
                 {
+                    if (model.ImageName is not null)
+                    {
+                        DocumentSetting.DeleteFile(model.ImageName, "images");
+                    }
+
                     return RedirectToAction(nameof(Index));
                 }
             }

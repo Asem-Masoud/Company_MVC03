@@ -1,15 +1,17 @@
 ﻿using Company_MVC03.DAL.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Company_MVC03.DAL.Data.Contexts
 {
-    public class CompanyDbContext : DbContext
+    public class CompanyDbContext : /*DbContext*/ IdentityDbContext<AppUser>
     {
         // V05
         // CLR

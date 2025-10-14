@@ -3,6 +3,7 @@ using Company_MVC03.BLL.Interfaces;
 using Company_MVC03.BLL.Repositories;
 using Company_MVC03.DAL.Models;
 using Company_MVC03.PL.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -12,6 +13,7 @@ namespace Company_MVC03.PL.Controllers
     // IN Dependances -> Add Project Reference -> Company_MVC03.BLL
 
     // MVC Controller 
+    [Authorize]
     public class DepartmentController : Controller
     {
         //private readonly IDepartmentRepository _departmentRepository;

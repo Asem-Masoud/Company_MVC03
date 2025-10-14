@@ -10,7 +10,7 @@ namespace Company_MVC03.DAL.Models
     public class AppUser : IdentityUser
     {
         public string FirstName { get; set; }
-        public string LasttName { get; set; }
+        public string LastName { get; set; }
         public bool IsAgree { get; set; }
 
     }

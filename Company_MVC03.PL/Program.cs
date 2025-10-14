@@ -2,8 +2,10 @@ using Company_MVC03.BLL;
 using Company_MVC03.BLL.Interfaces;
 using Company_MVC03.BLL.Repositories;
 using Company_MVC03.DAL.Data.Contexts;
+using Company_MVC03.DAL.Models;
 using Company_MVC03.PL.MappingProfiles;
 using Company_MVC03.PL.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Company_MVC03.PL
@@ -30,8 +32,7 @@ namespace Company_MVC03.PL
             });// Allow DI For CompanyDbContext (Manually)
                // V07
 
-            // AutoMapper
-            builder.Services.AddAutoMapper(m => m.AddProfile(new EmployeeProfile()));
+
 
 
             /*
@@ -54,6 +55,18 @@ namespace Company_MVC03.PL
             builder.Services.AddTransient<ITransientServices, TransientServices>(); //  
             builder.Services.AddSingleton<ISingletonServices, SingletonServices>(); // 
 
+            // AutoMapper
+            builder.Services.AddAutoMapper(m => m.AddProfile(new EmployeeProfile()));
+
+            builder.Services.AddIdentity<AppUser, IdentityRole>()
+                .AddEntityFrameworkStores<CompanyDbContext>();
+
+            builder.Services.ConfigureApplicationCookie(config => /*Because Used [Authorize] In HomeController*/
+            {
+                config.LoginPath = "/Account/SignIn";
+
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -69,7 +82,12 @@ namespace Company_MVC03.PL
 
             app.UseRouting();
 
-            // app.UseAuthorization();
+            #region SignIn&SignUp
+
+            app.UseAuthorization();
+            app.UseAuthorization();
+
+            #endregion
 
             app.MapControllerRoute(
                 name: "default",

@@ -166,6 +166,7 @@ namespace Compnay.C44.G02.PL.Controllers
                     if (flag)
                     {
                         // Check Your Inbox
+                        return RedirectToAction("CheckYourInbox");
 
                     }
 
@@ -177,6 +178,11 @@ namespace Compnay.C44.G02.PL.Controllers
             return View("ForgetPassword", model);
         }
 
+        [HttpGet]
+        public IActionResult CheckYourInbox()
+        {
+            return View();
+        }
 
         #endregion
 

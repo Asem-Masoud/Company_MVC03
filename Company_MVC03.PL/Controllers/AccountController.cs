@@ -5,6 +5,7 @@ using Company_MVC03.PL.Dtos;
 using Company_MVC03.PL.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Common;
 using System.Security.Policy;
@@ -184,6 +185,44 @@ namespace Compnay.C44.G02.PL.Controllers
             return View();
         }
 
+        #endregion
+
+        #region ResetPassword
+
+
+        [HttpGet]
+        public IActionResult ResetPassword(string email, string token)
+        {
+            TempData["email"] = email;
+            TempData["token"] = token
+                ;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                var email = TempData["email"] as string;
+                var token = TempData["token"] as string;
+
+                if (email is null || token is null) return BadRequest("Invalid Operation");
+                var user = await _userManager.FindByEmailAsync(email);
+                if (user is not null)
+                {
+                    var result = await _userManager.ResetPasswordAsync(user, token, model.NwePassword);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("SignIn");
+                    }
+                }
+
+                ModelState.AddModelError("", "Invalid Reset Password Operation");
+
+            }
+            return View();
+        }
         #endregion
 
     }

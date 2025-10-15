@@ -29,8 +29,9 @@ namespace Company_MVC03.PL
             builder.Services.AddDbContext<CompanyDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-            });// Allow DI For CompanyDbContext (Manually)
-               // V07
+            });
+            // Allow DI For CompanyDbContext (Manually)
+            // V07
 
 
 
@@ -59,7 +60,8 @@ namespace Company_MVC03.PL
             builder.Services.AddAutoMapper(m => m.AddProfile(new EmployeeProfile()));
 
             builder.Services.AddIdentity<AppUser, IdentityRole>()
-                .AddEntityFrameworkStores<CompanyDbContext>();
+                            .AddEntityFrameworkStores<CompanyDbContext>()
+                            .AddDefaultTokenProviders();
 
             builder.Services.ConfigureApplicationCookie(config => /*Because Used [Authorize] In HomeController*/
             {

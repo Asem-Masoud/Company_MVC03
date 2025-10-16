@@ -3,10 +3,6 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>All Employees</h1>
-
-<br />
-<br />
 
 @*S04V02*@
 @*
@@ -28,15 +24,18 @@
     </div>
 }
 
+<h1>All Employees</h1>
+
+<br />
+
+
 <form>
-    <div class="container">
-        <div class="row">
-            <div class="col-6">
-                <input id="SearchInput" placeholder="Search By Name" name="SearchInput" class="form-control" />
-            </div>
-            <div class="col-6">
-                <input type="submit" class="btn btn-success" value="Search" />
-            </div>
+    <div class="row m-4">
+        <div class="col-6">
+            <input type="text" id="SearchInput" name="SearchInput" class="form-control" />
+        </div>
+        <div class="col-6">
+            <input type="submit" value="search" class="btn btn-success" />
         </div>
     </div>
 </form>
@@ -69,7 +68,6 @@
             </tr>
         </thead>
         <tbody>
-
             @foreach (var item in Model)
             {
                 <tr>
@@ -94,7 +92,7 @@
                     {
                         <td>@item.Department.Name</td>
                     }
-                    <partial name="_ButtonPartialView" model="@item.Id" />
+                    <partial name="_ButtonPartialView" model="@item.Id.ToString()" />
                     @*
                     <td>
                         <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-warning">Details</a>

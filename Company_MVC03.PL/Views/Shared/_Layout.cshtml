@@ -35,20 +35,22 @@
 
                     </ul>
 
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Users</a>
-                        </li>
+                    <div class="d-flex justify-content-between">
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Role" asp-action="Index">Roles</a>
-                        </li>
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Users</a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-light btn btn-danger" asp-area="" asp-controller="Account" asp-action="SignOut">SignOut</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Role" asp-action="Index">Roles</a>
+                            </li>
+                        </ul>
 
-                    </ul>
+                        <form asp-controller="Account" asp-action="SignOut" method="post" class="d-inline m">
+                            <button type="submit" class="btn btn-danger">Sign out</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </nav>

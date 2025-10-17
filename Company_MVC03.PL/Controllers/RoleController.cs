@@ -1,18 +1,22 @@
 ﻿using Company_MVC03.DAL.Models;
 using Company_MVC03.PL.Dtos;
 using Company_MVC03.PL.Helpers;
+using Company_MVC03.PL.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Company_MVC03.PL.Controllers
 {
     public class RoleController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<AppUser> _userManager;
 
-        public RoleController(RoleManager<IdentityRole> roleManager)
+        public RoleController(RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager)
         {
             _roleManager = roleManager;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -143,6 +147,36 @@ namespace Company_MVC03.PL.Controllers
                 ModelState.AddModelError("", "InValid Operation");
             }
             return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddOrRemoveUsers(string roledId)
+        {
+            var role = await _roleManager.FindByIdAsync(roledId);
+            if (role is null) return NotFound();
+
+            var UsersInRole = new List<UsersInRoleViewModel>();
+            var Users = await _userManager.Users.ToListAsync();
+
+            foreach (var user in Users)
+            {
+                var usersInRole = new UsersInRoleViewModel()
+                {
+                    UserId = user.Id,
+                    UserName = user.UserName,
+                };
+
+                if (await _userManager.IsInRoleAsync(user, role.Name))
+                {
+                    usersInRole.IsSelected = true;
+                }
+                else
+                {
+                    usersInRole.IsSelected = false;
+                }
+                UsersInRole.Add(usersInRole);
+            }
+            return View(UsersInRole);
         }
     }
 }

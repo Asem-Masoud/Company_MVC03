@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Details Role</h1>
@@ -11,7 +12,7 @@
 
 
 <div>
-    <partial name="EmployeePartialView/_DeleteDetailsPartialView" />
+    <partial name="RolePartialView/_DeleteDetailsPartialView" />
 
     <div class="my-3">
         <a asp-action="Edit" class="btn btn-warning">Edit</a>

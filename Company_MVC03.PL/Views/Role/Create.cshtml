@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
@@ -14,7 +15,7 @@
 
 <form asp-action="Create" enctype="multipart/form-data">
 
-    <partial name="EmployeePartialView/_CreateEditPartialView" />
+    <partial name="RolePartialView/_CreateEditPartialView" />
 
 
     <div class="my-3">

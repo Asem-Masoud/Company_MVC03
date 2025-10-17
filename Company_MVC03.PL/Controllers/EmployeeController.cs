@@ -132,14 +132,13 @@ namespace Company_MVC03.PL.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(int? id, string viewName = "Edit")
+        public async Task<IActionResult> Edit(int? id)
         {
-            if (id is null) return BadRequest("Invalid Id"); //400
+            //if (id is null) return BadRequest("Invalid Id"); //400
 
-            var employee = await _unitOfWork.EmployeeRepository.GetAsync(id.Value);
-            var departments = await _unitOfWork.DepartmentRepository.GetAllAsync();
-            ViewData["departments"] = departments;
-            if (employee is null) return NotFound(new { StatusCode = 404, message = $"Employee With Id : {id} is not found" });
+            //var employee = await _unitOfWork.EmployeeRepository.GetAsync(id.Value);
+
+            //if (employee is null) return NotFound(new { StatusCode = 404, message = $"Employee With Id : {id} is not found" });
 
             /*
             var employeeDto = new CreateEmployeeDto // PartialView
@@ -157,16 +156,21 @@ namespace Company_MVC03.PL.Controllers
             };
             */
 
-            var dto = _mapper.Map<CreateEmployeeDto>(employee);
+            //  var dto = _mapper.Map<CreateEmployeeDto>(employee);
 
 
             //return View(employeeDto);
-            return View(viewName, dto);
+            // return View(viewName, dto);
+
+            var departments = await _unitOfWork.DepartmentRepository.GetAllAsync();
+            ViewData["departments"] = departments;
+
+            return await Details(id, "Edit");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([FromRoute] int id, /*Employee*/ CreateEmployeeDto model, string viewName = "Edit")
+        public async Task<IActionResult> Edit([FromRoute] int id, /*Employee*/ CreateEmployeeDto model)
         {
             if (ModelState.IsValid)
             {
@@ -199,21 +203,18 @@ namespace Company_MVC03.PL.Controllers
                     model.ImageName = DocumentSetting.UploadFile(model.Image, "images");
                 }
 
-
                 var employee = _mapper.Map<Employee>(model);
                 employee.Id = id;
 
-
                 _unitOfWork.EmployeeRepository.Update(employee);
                 var count = await _unitOfWork.CompleteAsync();
-
 
                 if (count > 0)
                 {
                     return RedirectToAction(nameof(Index));
                 }
             }
-            return View(viewName, model);
+            return View(model);
         }
 
 
@@ -247,5 +248,6 @@ namespace Company_MVC03.PL.Controllers
             }
             return View(model);
         }
+
     }
 }

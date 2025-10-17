@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Company_MVC03.PL.Controllers
 {
-    [Authorize]
+   // [Authorize]
     public class EmployeeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

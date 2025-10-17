@@ -13,7 +13,7 @@ namespace Company_MVC03.PL.Controllers
     // IN Dependances -> Add Project Reference -> Company_MVC03.BLL
 
     // MVC Controller 
-    [Authorize]
+    //[Authorize]
     public class DepartmentController : Controller
     {
         //private readonly IDepartmentRepository _departmentRepository;

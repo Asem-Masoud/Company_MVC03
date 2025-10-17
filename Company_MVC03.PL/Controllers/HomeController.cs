@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Company_MVC03.PL.Controllers
 {
-    [Authorize] //  Used Only If Allowed That for U
+    //[Authorize] //  Used Only If Allowed That for U
     // [AllowAnonymous] // All Allowed To Use
     public class HomeController : Controller
     {

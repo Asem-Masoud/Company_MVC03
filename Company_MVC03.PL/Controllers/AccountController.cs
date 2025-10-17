@@ -25,7 +25,6 @@ namespace Compnay.C44.G02.PL.Controllers
             _signInManager = signInManager;
         }
 
-
         #region SignUp
         [HttpGet]
         public IActionResult SignUp()
@@ -80,7 +79,6 @@ namespace Compnay.C44.G02.PL.Controllers
         }
         #endregion
 
-
         #region SignIn
 
         [HttpGet]
@@ -129,7 +127,6 @@ namespace Compnay.C44.G02.PL.Controllers
         }
 
         #endregion
-
 
         #region Forget Password
 

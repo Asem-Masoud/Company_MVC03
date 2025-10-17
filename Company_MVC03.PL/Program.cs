@@ -19,9 +19,9 @@ namespace Company_MVC03.PL
             // Add services to the container.
             builder.Services.AddControllersWithViews(); // Register Built-in MVC Services
             // V07
-            //builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>(); // Allow DI For DepartmentRepository (Manually)
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>(); // Allow DI For DepartmentRepository (Manually)
             // S04V09
-            //builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(); // Allow DI
 

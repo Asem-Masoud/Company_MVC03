@@ -32,8 +32,6 @@ namespace Compnay.C44.G02.PL.Controllers
             return View();
         }
 
-
-
         // P@ssW0rd
         [HttpPost]
         public async Task<IActionResult> SignUp(SignUpDto model)
@@ -41,7 +39,6 @@ namespace Compnay.C44.G02.PL.Controllers
             if (ModelState.IsValid) // Server Side Validation
             {
                 var user = await _userManager.FindByNameAsync(model.UserName);
-
                 if (user is null)
                 {
                     user = await _userManager.FindByEmailAsync(model.Email);
@@ -49,7 +46,6 @@ namespace Compnay.C44.G02.PL.Controllers
                     if (user is null)
                     {
                         // Register
-
                         user = new AppUser()
                         {
                             UserName = model.UserName,
@@ -66,7 +62,6 @@ namespace Compnay.C44.G02.PL.Controllers
                             // Send Email To Confirm Email
                             return RedirectToAction("SignIn");
                         }
-
                         foreach (var error in result.Errors)
                         {
                             ModelState.AddModelError("", error.Description);
@@ -80,7 +75,6 @@ namespace Compnay.C44.G02.PL.Controllers
         #endregion
 
         #region SignIn
-
         [HttpGet]
         public IActionResult SignIn()
         {
@@ -113,23 +107,18 @@ namespace Compnay.C44.G02.PL.Controllers
             }
             return View(model);
         }
-
-
         #endregion
 
         #region SignOut
-
         [HttpPost]
         public new async Task<IActionResult> SignOut()
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("SignIn");
         }
-
         #endregion
 
         #region Forget Password
-
         [HttpGet]
         public IActionResult ForgetPassword()
         {
@@ -146,10 +135,8 @@ namespace Compnay.C44.G02.PL.Controllers
                 {
                     // Generate Token
                     var token = await _userManager.GeneratePasswordResetTokenAsync(user); // Add Generate In Program
-
                     // Create URL
                     var url = Url.Action("ResetPassword", "Account", new { email = model.Email, token }, Request.Scheme);
-
                     // Create Email
                     var email = new Email()
                     {
@@ -157,7 +144,6 @@ namespace Compnay.C44.G02.PL.Controllers
                         Subject = "Reset Password",
                         Body = url
                     };
-
                     // Send email 
                     var flag = Company_MVC03.PL.Helpers.EmailSettings.SendEmail(email);
 
@@ -165,14 +151,10 @@ namespace Compnay.C44.G02.PL.Controllers
                     {
                         // Check Your Inbox
                         return RedirectToAction("CheckYourInbox");
-
                     }
-
                 }
-
             }
             ModelState.AddModelError("", "Invalid Reset Password Url");
-
             return View("ForgetPassword", model);
         }
 
@@ -181,18 +163,14 @@ namespace Compnay.C44.G02.PL.Controllers
         {
             return View();
         }
-
         #endregion
 
         #region ResetPassword
-
-
         [HttpGet]
         public IActionResult ResetPassword(string email, string token)
         {
             TempData["email"] = email;
-            TempData["token"] = token
-                ;
+            TempData["token"] = token;
             return View();
         }
 
@@ -214,9 +192,7 @@ namespace Compnay.C44.G02.PL.Controllers
                         return RedirectToAction("SignIn");
                     }
                 }
-
                 ModelState.AddModelError("", "Invalid Reset Password Operation");
-
             }
             return View();
         }

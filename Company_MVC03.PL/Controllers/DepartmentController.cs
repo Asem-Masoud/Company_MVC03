@@ -76,7 +76,7 @@ namespace Company_MVC03.PL.Controllers
         {
             if (id is null) return BadRequest("Invalid Id"); //400
 
-            var department = await _unitOfWork.DepartmentRepository.GetAsync(id.Value);
+            var department = await _unitOfWork.DepartmentRepository.GetByIdAsyncGet(id.Value);
             if (department is null) return NotFound(new { StatusCode = 404, message = $"Department With Id : {id} is not found" });
             return View(viewName, department);
         }
@@ -140,7 +140,36 @@ namespace Company_MVC03.PL.Controllers
         }*/
 
 
+        [HttpGet]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            return await Details(id, "Delete");
+        }
 
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+
+            var department = await _unitOfWork.DepartmentRepository.GetByIdAsyncGet(id);
+
+            if (department == null)
+                return NotFound();
+
+            _unitOfWork.DepartmentRepository.Delete(department);
+            var count = await _unitOfWork.CompleteAsync();
+
+            if (count > 0)
+                return RedirectToAction(nameof(Index));
+
+
+            return View(department);
+
+        }
+
+
+        /*
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete([FromRoute] int id, Department department)
@@ -149,6 +178,8 @@ namespace Company_MVC03.PL.Controllers
             if (ModelState.IsValid)
             {
                 if (id != department.Id) return BadRequest(); //400
+
+
 
                 _unitOfWork.DepartmentRepository.Delete(department);
                 var count = await _unitOfWork.CompleteAsync(); // Save Changes
@@ -160,5 +191,6 @@ namespace Company_MVC03.PL.Controllers
             }
             return View(department);
         }
+        */
     }
 }

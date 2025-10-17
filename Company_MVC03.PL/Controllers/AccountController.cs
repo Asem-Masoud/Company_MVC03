@@ -74,30 +74,6 @@ namespace Compnay.C44.G02.PL.Controllers
             return RedirectToAction("SignIn");
         }
 
-
-
-        [HttpPost]
-        public async Task<IActionResult> SignIn(SignInDto model)
-        {
-            if (!ModelState.IsValid)
-                return View(model);
-
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user is null || !await _userManager.CheckPasswordAsync(user, model.Password))
-            {
-                ModelState.AddModelError("", "Invalid login");
-                return View(model);
-            }
-
-            var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, lockoutOnFailure: false);
-            if (!result.Succeeded)
-            {
-                ModelState.AddModelError("", "Invalid login");
-                return View(model);
-            }
-
-            return RedirectToAction(nameof(HomeController.Index), "Home");
-        }
         /*
         [HttpPost]
         public async Task<IActionResult> SignUp(SignUpDto model)
@@ -152,8 +128,28 @@ namespace Compnay.C44.G02.PL.Controllers
         // P@ssW0rd
 
 
+        [HttpPost]
+        public async Task<IActionResult> SignIn(SignInDto model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
 
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user is null || !await _userManager.CheckPasswordAsync(user, model.Password))
+            {
+                ModelState.AddModelError("", "Invalid login");
+                return View(model);
+            }
 
+            var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, lockoutOnFailure: false);
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "Invalid login");
+                return View(model);
+            }
+
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
 
         /*
         [HttpPost] // Account/SignIn

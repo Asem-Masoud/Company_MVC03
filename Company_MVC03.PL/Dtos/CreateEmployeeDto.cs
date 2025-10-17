@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Company_MVC03.PL.Dtos
 {
-    public class CreateEmployeeDto
+    public class CreateEmployeeDto : BaseEntity
     {
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }

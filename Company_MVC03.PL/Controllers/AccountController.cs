@@ -33,6 +33,72 @@ namespace Compnay.C44.G02.PL.Controllers
         }
 
         // P@ssW0rd
+
+        public async Task<IActionResult> SignUp(SignUpDto model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var existingUser = await _userManager.Users
+                .FirstOrDefaultAsync(u => u.UserName == model.UserName || u.Email == model.Email);
+
+            if (existingUser is not null)
+            {
+                if (existingUser.UserName == model.UserName)
+                    ModelState.AddModelError("", "Username already taken");
+
+                if (existingUser.Email == model.Email)
+                    ModelState.AddModelError("", "Email already taken");
+
+                return View(model);
+            }
+
+            var user = new AppUser()
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Email = model.Email,
+                IsAgree = model.IsAgree,
+                UserName = model.UserName,
+            };
+
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+                return View(model);
+            }
+            return RedirectToAction("SignIn");
+        }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> SignIn(SignInDto model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user is null || !await _userManager.CheckPasswordAsync(user, model.Password))
+            {
+                ModelState.AddModelError("", "Invalid login");
+                return View(model);
+            }
+
+            var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, lockoutOnFailure: false);
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "Invalid login");
+                return View(model);
+            }
+
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+        /*
         [HttpPost]
         public async Task<IActionResult> SignUp(SignUpDto model)
         {
@@ -72,6 +138,7 @@ namespace Compnay.C44.G02.PL.Controllers
             }
             return View(model);
         }
+        */
         #endregion
 
         #region SignIn
@@ -84,6 +151,11 @@ namespace Compnay.C44.G02.PL.Controllers
 
         // P@ssW0rd
 
+
+
+
+
+        /*
         [HttpPost] // Account/SignIn
         public async Task<IActionResult> SignIn(SignInDto model)
         {
@@ -107,6 +179,7 @@ namespace Compnay.C44.G02.PL.Controllers
             }
             return View(model);
         }
+        */
         #endregion
 
         #region SignOut

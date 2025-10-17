@@ -1,4 +1,4 @@
-﻿namespace Company_MVC03.PL.ViewModels
+﻿namespace Company_MVC03.PL.Dtos
 {
     public class UsersInRoleViewModel
     {

@@ -1,7 +1,6 @@
 ﻿using Company_MVC03.DAL.Models;
 using Company_MVC03.PL.Dtos;
 using Company_MVC03.PL.Helpers;
-using Company_MVC03.PL.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -150,10 +149,12 @@ namespace Company_MVC03.PL.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AddOrRemoveUsers(string roledId)
+        public async Task<IActionResult> AddOrRemoveUsers(string roleId)
         {
-            var role = await _roleManager.FindByIdAsync(roledId);
+            var role = await _roleManager.FindByIdAsync(roleId);
             if (role is null) return NotFound();
+
+            ViewData["RoleId"] = roleId; // ToUsingInView
 
             var UsersInRole = new List<UsersInRoleViewModel>();
             var Users = await _userManager.Users.ToListAsync();
@@ -177,6 +178,34 @@ namespace Company_MVC03.PL.Controllers
                 UsersInRole.Add(usersInRole);
             }
             return View(UsersInRole);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddOrRemoveUsers(string roleId, List<UsersInRoleViewModel> users)
+        {
+            var role = await _roleManager.FindByIdAsync(roleId);
+            if (role is null) return NotFound();
+
+            if (ModelState.IsValid)
+            {
+                foreach (var user in users)
+                {
+                    var appUser = await _userManager.FindByIdAsync(user.UserId);
+                    if (appUser is not null)
+                    {
+                        if (user.IsSelected && !(await _userManager.IsInRoleAsync(appUser, role.Name)))
+                        {
+                            await _userManager.AddToRoleAsync(appUser, role.Name);
+                        }
+                        else if (!user.IsSelected && await _userManager.IsInRoleAsync(appUser, role.Name))
+                        {
+                            await _userManager.RemoveFromRoleAsync(appUser, role.Name);
+                        }
+                    }
+                }
+                return RedirectToAction(nameof(Edit), new { id = roleId });
+            }
+            return View(users);
         }
     }
 }

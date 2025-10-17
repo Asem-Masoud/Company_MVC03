@@ -120,14 +120,14 @@ namespace Compnay.C44.G02.PL.Controllers
         #endregion
 
         #region SignOut
-        /*
+
         [HttpPost]
         public new async Task<IActionResult> SignOut()
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("SignIn");
         }
-        */
+
         #endregion
 
 

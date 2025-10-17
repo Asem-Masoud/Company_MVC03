@@ -200,7 +200,7 @@ namespace Compnay.C44.G02.PL.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
-                if (user is null)
+                if (user is not null)
                 {
                     // Generate Token
                     var token = await _userManager.GeneratePasswordResetTokenAsync(user); // Add Generate In Program
@@ -238,8 +238,8 @@ namespace Compnay.C44.G02.PL.Controllers
         [HttpGet]
         public IActionResult ResetPassword(string email, string token)
         {
-            TempData["email"] = email;
-            TempData["token"] = token;
+            TempData["Email"] = email;
+            TempData["Token"] = token;
             return View();
         }
 

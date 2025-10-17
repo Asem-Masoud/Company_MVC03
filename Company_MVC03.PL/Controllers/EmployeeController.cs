@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Company_MVC03.PL.Controllers
 {
-   // [Authorize]
+    // [Authorize]
     public class EmployeeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -122,7 +122,7 @@ namespace Company_MVC03.PL.Controllers
         {
             if (id is null) return BadRequest("Invalid Id"); //400
 
-            var employee = await _unitOfWork.EmployeeRepository.GetAsync(id.Value);
+            var employee = await _unitOfWork.EmployeeRepository.GetByIdAsyncGet(id.Value);
 
             if (employee is null) return NotFound(new { StatusCode = 404, message = $"Employee With Id : {id} is not found" });
 

@@ -7,10 +7,8 @@ namespace Company_MVC03.PL.Dtos
         [Required(ErrorMessage = "FirstName is reuqired")]
         public string FirstName { get; set; }
 
-
         [Required(ErrorMessage = "LastName is reuqired")]
         public string LastName { get; set; }
-
 
         [Required(ErrorMessage = "UserName is reuqired")]
         public string UserName { get; set; }
@@ -18,7 +16,6 @@ namespace Company_MVC03.PL.Dtos
         [Required(ErrorMessage = "Email is reuqired")]
         [EmailAddress]
         public string Email { get; set; }
-
 
         // Pa$$w0rd
         [Required(ErrorMessage = "Password is reuqired")]
@@ -31,6 +28,5 @@ namespace Company_MVC03.PL.Dtos
         public string ConfirmPassword { get; set; }
 
         public bool IsAgree { get; set; }
-
     }
 }

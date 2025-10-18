@@ -21,7 +21,7 @@ namespace Company_MVC03.PL.Helpers
             var mail = new MimeMessage();
 
             mail.Subject = email.Subject;
-            mail.From.Add(MailboxAddress.Parse(_options.Value.Email));
+            mail.From.Add(new MailboxAddress(_options.Value.Email, _options.Value.DisplayName));
             mail.To.Add(MailboxAddress.Parse(email.To));
 
             var buldier = new BodyBuilder();

@@ -18,11 +18,14 @@ namespace Compnay.C44.G02.PL.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly IMailServices _mailServices;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IMailServices mailServices)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _mailServices = mailServices;
         }
 
         #region SignUp
@@ -214,13 +217,15 @@ namespace Compnay.C44.G02.PL.Controllers
                         Body = url
                     };
                     // Send email 
-                    var flag = Company_MVC03.PL.Helpers.EmailSettings.SendEmail(email);
+                    //var flag = Company_MVC03.PL.Helpers.EmailSettings.SendEmail(email);
 
-                    if (flag)
-                    {
-                        // Check Your Inbox
-                        return RedirectToAction("CheckYourInbox");
-                    }
+                    //if (flag)
+                    //{
+                    //    // Check Your Inbox
+                    //    return RedirectToAction("CheckYourInbox");
+                    //}
+                    _mailServices.SendEmail(email);
+                    return RedirectToAction("CheckYourInbox");
                 }
             }
             ModelState.AddModelError("", "Invalid Reset Password Url");

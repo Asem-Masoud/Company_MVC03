@@ -58,6 +58,9 @@ namespace Company_MVC03.PL
             builder.Services.AddAutoMapper(m => m.AddProfile(new EmployeeProfile()));
 
             builder.Services.Configure<MailSettings>(builder.Configuration.GetSection(nameof(MailSettings))); // WorkShop 01
+            builder.Services.AddScoped<IMailServices, MailServices>();
+
+
 
             builder.Services.AddIdentity<AppUser, IdentityRole>()
                             .AddEntityFrameworkStores<CompanyDbContext>()

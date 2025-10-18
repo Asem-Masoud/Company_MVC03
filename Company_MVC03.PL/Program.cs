@@ -3,6 +3,7 @@ using Company_MVC03.BLL.Interfaces;
 using Company_MVC03.BLL.Repositories;
 using Company_MVC03.DAL.Data.Contexts;
 using Company_MVC03.DAL.Models;
+using Company_MVC03.PL.Helpers;
 using Company_MVC03.PL.MappingProfiles;
 using Company_MVC03.PL.Services;
 using Microsoft.AspNetCore.Identity;
@@ -33,9 +34,6 @@ namespace Company_MVC03.PL
             // Allow DI For CompanyDbContext (Manually)
             // V07
 
-
-
-
             /*
             builder.Services.AddDbContext<CompanyDbContext>(options =>
             {
@@ -58,6 +56,8 @@ namespace Company_MVC03.PL
 
             // AutoMapper
             builder.Services.AddAutoMapper(m => m.AddProfile(new EmployeeProfile()));
+
+            builder.Services.Configure<MailSettings>(builder.Configuration.GetSection(nameof(MailSettings))); // WorkShop 01
 
             builder.Services.AddIdentity<AppUser, IdentityRole>()
                             .AddEntityFrameworkStores<CompanyDbContext>()
